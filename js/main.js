@@ -19,7 +19,8 @@ const App = {
   },
 };
 
-for (const m of ART.misc) document.documentElement.style.setProperty('--img-' + m, `url(assets/misc/${m}.webp)`);
+if (ART.misc.includes('back-capy')) document.documentElement.classList.add('art-backs');
+for (const m of ART.misc) document.documentElement.style.setProperty('--img-' + m, `url("${new URL('assets/misc/' + m + '.webp', document.baseURI).href}")`);
 try { const n = localStorage.getItem('capybar-name'); if (n) $('#name-in').value = n; } catch (e) {}
 document.addEventListener('click', e => UI.onClick(e));
 document.addEventListener('mouseover', e => UI.hover(e));
