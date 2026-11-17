@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capybar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="capy" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="96" rx="42" ry="28" fill="#9a6536"/>
+    <circle cx="27" cy="33" r="8" fill="#7d4f28"/><circle cx="73" cy="33" r="8" fill="#7d4f28"/>
+    <circle cx="27" cy="34" r="4" fill="#5d3a1e"/><circle cx="73" cy="34" r="4" fill="#5d3a1e"/>
+    <rect x="20" y="30" width="60" height="56" rx="26" fill="#b57a44"/>
+    <ellipse cx="50" cy="68" rx="23" ry="17" fill="#c9935a"/>
+    <ellipse cx="50" cy="60" rx="9" ry="5.5" fill="#4a2e18"/>
+    <path d="M50 65 v6 M42 74 q8 5 16 0" stroke="#4a2e18" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="35" cy="50" r="3.6" fill="#241408"/><circle cx="65" cy="50" r="3.6" fill="#241408"/>
+    <circle cx="36.2" cy="48.8" r="1.1" fill="#fff"/><circle cx="66.2" cy="48.8" r="1.1" fill="#fff"/>
+    <path d="M29 45 q6 -3 12 0 M59 45 q6 -3 12 0" stroke="#7d4f28" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="30" cy="62" rx="4" ry="2.5" fill="#e59a7a" opacity=".55"/><ellipse cx="70" cy="62" rx="4" ry="2.5" fill="#e59a7a" opacity=".55"/>
+  </symbol>
+</svg>
+
+<div id="menu" class="screen">
+  <div class="menu-card">
+    <div class="logo"><svg viewBox="0 0 100 100"><use href="#capy"/></svg></div>
+    <h1>Capybar</h1>
+    <p class="tag">Fill your table with the most interesting capybaras in the bar.</p>
+    <input class="name-in" id="name-in" maxlength="12" value="Player" aria-label="Your name">
+    <div class="opp-pick"><span>Rivals</span>
+      <button class="chip" data-bots="1">1</button><button class="chip on" data-bots="2">2</button><button class="chip" data-bots="3">3</button>
+    </div>
+    <button class="btn big" id="btn-play">Play</button>
+    <button class="btn big alt" id="btn-tutorial">Tutorial</button>
+    <button class="btn big online" id="btn-online">Play online</button>
+    <button class="btn ghost" id="btn-rules">Rules &amp; cards</button>
+  </div>
+</div>
+
+<div id="game" class="screen hidden">
+  <header id="topbar"></header>
+  <section id="opps"></section>
+  <section id="center"></section>
+  <div id="banner"></div>
+  <section id="me"></section>
+  <aside id="log" class="hidden"></aside>
+  <div id="played"></div>
+</div>
+
+<div id="zoom"></div>
+<div id="modal" class="hidden"></div>
+<div id="tut" class="hidden"><div id="tut-block"></div><div id="tut-spot"></div><div id="tut-bubble"></div></div>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="js/art.js"></script>
+<script src="js/data.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/bots.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/net.js"></script>
+<script src="js/tutorial.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
