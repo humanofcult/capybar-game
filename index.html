@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Capybar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="assets/misc/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/misc/icon-192.png">
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 <!--SYMBOLS-->
@@ -31,16 +31,19 @@
 <div id="menu" class="screen">
   <div id="menu-fan"></div>
   <div class="menu-card">
-    <img class="logo-img" src="assets/misc/logo.webp" alt="Capybar" width="560" height="560">
-    <p class="tag">Fill your table with the most interesting capybaras in the bar.</p>
+    <img class="logo-img" src="assets/misc/logo.webp" alt="Capybar" width="640" height="640">
+    <p class="tag">The card game of the coziest bar in town</p>
+    <div class="orn"><i></i></div>
     <input class="name-in" id="name-in" maxlength="12" value="Player" aria-label="Your name">
     <div class="opp-pick"><span>Rivals</span>
       <button class="chip" data-bots="1">1</button><button class="chip on" data-bots="2">2</button><button class="chip" data-bots="3">3</button>
     </div>
-    <button class="btn big" id="btn-play">Play</button>
-    <button class="btn big alt" id="btn-tutorial">Tutorial</button>
-    <button class="btn big online" id="btn-online">Play online</button>
-    <button class="btn ghost" id="btn-rules">Rules &amp; cards</button>
+    <div class="menu-btns">
+      <button class="btn big" id="btn-play">Play</button>
+      <button class="btn big alt" id="btn-tutorial">Tutorial</button>
+      <button class="btn big online" id="btn-online">Play online</button>
+      <button class="btn ghost" id="btn-rules">Rules &amp; cards</button>
+    </div>
   </div>
 </div>
 
@@ -59,13 +62,13 @@
 <div id="tut" class="hidden"><div id="tut-block"></div><div id="tut-spot"></div><div id="tut-bubble"></div></div>
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-<script src="js/art.js?v=5"></script>
-<script src="js/data.js?v=5"></script>
-<script src="js/engine.js?v=5"></script>
-<script src="js/bots.js?v=5"></script>
-<script src="js/ui.js?v=5"></script>
-<script src="js/net.js?v=5"></script>
-<script src="js/tutorial.js?v=5"></script>
-<script src="js/main.js?v=5"></script>
+<script src="js/art.js?v=10"></script>
+<script src="js/data.js?v=10"></script>
+<script src="js/engine.js?v=10"></script>
+<script src="js/bots.js?v=10"></script>
+<script src="js/ui.js?v=10"></script>
+<script src="js/net.js?v=10"></script>
+<script src="js/tutorial.js?v=10"></script>
+<script src="js/main.js?v=10"></script>
 </body>
 </html>
