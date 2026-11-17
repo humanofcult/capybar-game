@@ -6,29 +6,32 @@
 <title>Capybar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=2">
+<link rel="icon" href="assets/misc/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/misc/icon-192.png">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
+<!--SYMBOLS-->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="capy" viewBox="0 0 100 100">
-    <ellipse cx="50" cy="96" rx="42" ry="28" fill="#9a6536"/>
-    <circle cx="27" cy="33" r="8" fill="#7d4f28"/><circle cx="73" cy="33" r="8" fill="#7d4f28"/>
-    <circle cx="27" cy="34" r="4" fill="#5d3a1e"/><circle cx="73" cy="34" r="4" fill="#5d3a1e"/>
-    <rect x="20" y="30" width="60" height="56" rx="26" fill="#b57a44"/>
-    <ellipse cx="50" cy="68" rx="23" ry="17" fill="#c9935a"/>
-    <ellipse cx="50" cy="60" rx="9" ry="5.5" fill="#4a2e18"/>
-    <path d="M50 65 v6 M42 74 q8 5 16 0" stroke="#4a2e18" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <circle cx="35" cy="50" r="3.6" fill="#241408"/><circle cx="65" cy="50" r="3.6" fill="#241408"/>
-    <circle cx="36.2" cy="48.8" r="1.1" fill="#fff"/><circle cx="66.2" cy="48.8" r="1.1" fill="#fff"/>
-    <path d="M29 45 q6 -3 12 0 M59 45 q6 -3 12 0" stroke="#7d4f28" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <ellipse cx="30" cy="62" rx="4" ry="2.5" fill="#e59a7a" opacity=".55"/><ellipse cx="70" cy="62" rx="4" ry="2.5" fill="#e59a7a" opacity=".55"/>
-  </symbol>
+<ellipse cx="32" cy="98" rx="42" ry="29" fill="#9a6536"/>
+<path d="M18 44Q18 20 42 20H66Q93 21 95 47V64Q95 82 78 82H38Q18 82 18 60Z" fill="#bd8049" stroke="#5b3418" stroke-width="2.4" stroke-linejoin="round"/>
+<ellipse cx="50" cy="30" rx="22" ry="5.5" fill="#d6a269" opacity=".55"/>
+<path d="M72 44Q94 44 94 56V64Q94 80 78 81H70Q75 62 72 44Z" fill="#9a6538"/>
+<ellipse cx="40" cy="24" rx="7.5" ry="6" fill="#7d4f28" stroke="#5b3418" stroke-width="1.6"/><ellipse cx="40.5" cy="25" rx="3.6" ry="3" fill="#4d2e16"/>
+<rect x="83" y="36" width="13" height="22" rx="6.5" fill="#2f180b"/>
+<ellipse cx="90.5" cy="44" rx="1.9" ry="2.8" fill="#8a5a38"/>
+<path d="M94 67Q85 74 75 69" stroke="#2f180b" stroke-width="2.3" fill="none" stroke-linecap="round"/>
+<ellipse cx="60" cy="41" rx="3.7" ry="4.3" fill="#1f1006"/><circle cx="61.3" cy="39.4" r="1.4" fill="#fff"/>
+<path d="M53 35.5q6-4.5 13-1" stroke="#5b3418" stroke-width="2" fill="none" stroke-linecap="round"/>
+<ellipse cx="67" cy="58" rx="5" ry="3" fill="#e08a6a" opacity=".5"/></symbol>
 </svg>
+<!--/SYMBOLS-->
 
 <div id="menu" class="screen">
+  <div id="menu-fan"></div>
   <div class="menu-card">
-    <div class="logo"><svg viewBox="0 0 100 100"><use href="#capy"/></svg></div>
-    <h1>Capybar</h1>
+    <img class="logo-img" src="assets/misc/logo.webp" alt="Capybar" width="560" height="560">
     <p class="tag">Fill your table with the most interesting capybaras in the bar.</p>
     <input class="name-in" id="name-in" maxlength="12" value="Player" aria-label="Your name">
     <div class="opp-pick"><span>Rivals</span>
@@ -56,13 +59,13 @@
 <div id="tut" class="hidden"><div id="tut-block"></div><div id="tut-spot"></div><div id="tut-bubble"></div></div>
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-<script src="js/art.js?v=2"></script>
-<script src="js/data.js?v=2"></script>
-<script src="js/engine.js?v=2"></script>
-<script src="js/bots.js?v=2"></script>
-<script src="js/ui.js?v=2"></script>
-<script src="js/net.js?v=2"></script>
-<script src="js/tutorial.js?v=2"></script>
-<script src="js/main.js?v=2"></script>
+<script src="js/art.js?v=5"></script>
+<script src="js/data.js?v=5"></script>
+<script src="js/engine.js?v=5"></script>
+<script src="js/bots.js?v=5"></script>
+<script src="js/ui.js?v=5"></script>
+<script src="js/net.js?v=5"></script>
+<script src="js/tutorial.js?v=5"></script>
+<script src="js/main.js?v=5"></script>
 </body>
 </html>

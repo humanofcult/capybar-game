@@ -12,7 +12,7 @@ const Tut = {
   show(text, sel, withNext) {
     this.sel = sel || null;
     $('#tut').className = withNext ? 'info' : 'task';
-    $('#tut-bubble').innerHTML = `<div class="tb-capy"><svg viewBox="0 0 100 100"><use href="#capy"/></svg></div><div class="tb-body"><div class="tb-text">${text}</div>
+    $('#tut-bubble').innerHTML = `<div class="tb-capy"><img src="assets/misc/avatar.webp" alt=""></div><div class="tb-body"><div class="tb-text">${text}</div>
       <div class="tb-btns">${withNext ? '<button class="btn sm" id="tut-next">Next</button>' : '<span class="tb-do">👆 Your move</span>'}<button class="tb-skip" id="tut-skip">Skip tutorial</button></div></div>`;
     $('#tut-skip').onclick = () => { const r = this._res; this._res = null; this.stop(); UI.render(); if (r) r(); };
     this.reposition();

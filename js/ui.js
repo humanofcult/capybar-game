@@ -20,7 +20,7 @@ function capyCard(card, o = {}) {
     <div class="c-top"><span class="coin${cost < d.cost ? ' cheap' : ''}">${cost}</span><span class="c-name">${esc(d.name)}</span><span class="pts${pts > d.pts ? ' up' : pts < d.pts ? ' down' : ''}">${pts}</span></div>
     ${artHTML('capy', d.id, d.emoji)}
     <div class="c-type">${t.icon} ${t.name}</div>
-    <div class="c-text"><span>${rich(d.text)}</span></div>
+    <div class="c-text${d.text.length > 66 ? (d.text.length > 90 ? ' xlong' : ' long') : ''}"><span>${rich(d.text)}</span></div>
     ${card.star ? '<span class="tok tok-star">×2</span>' : ''}${card.cursed ? '<span class="tok tok-curse">☠</span>' : ''}
   </div>`;
 }
@@ -30,7 +30,7 @@ function actionCard(card, o = {}) {
     <div class="c-top"><span class="c-name">${esc(a.name)}</span></div>
     ${artHTML('action', a.id, a.emoji)}
     <div class="c-type">⚡ Action</div>
-    <div class="c-text"><span>${rich(a.text)}</span></div>
+    <div class="c-text${a.text.length > 66 ? (a.text.length > 90 ? ' xlong' : ' long') : ''}"><span>${rich(a.text)}</span></div>
   </div>`;
 }
 const backCard = (kind, size) => `<div class="card back ${kind} ${size || 'md'}"><div class="back-in">${kind === 'bk-capy' ? '<svg viewBox="0 0 100 100"><use href="#capy"/></svg>' : '<span>⚡</span>'}</div></div>`;
@@ -83,13 +83,13 @@ const UI = {
       const sc = G.score(p.idx).rows; let h = '';
       for (let i = 0; i < TABLE_MAX; i++) {
         const c = p.table[i];
-        h += `<div class="slot seat ${size}">${c ? capyCard(c, { size, pts: sc[i].pts, cls: pickUid.has(c.uid) ? 'pick' : '' }) : ''}</div>`;
+        h += `<div class="slot seat ${size}" data-n="${i + 1}">${c ? capyCard(c, { size, pts: sc[i].pts, cls: pickUid.has(c.uid) ? 'pick' : '' }) : ''}</div>`;
       }
       return h;
     };
 
     $('#topbar').innerHTML = `
-      <div class="brand"><svg viewBox="0 0 100 100"><use href="#capy"/></svg>Capybar</div>
+      <div class="brand"><img class="avimg" src="assets/misc/avatar.webp" alt="">Capybar</div>
       <div class="round">Round <b>${Math.max(1, G.round)}</b> / ${MAX_ROUNDS}${G.finalRound ? ' · <b class="warn">final round</b>' : ''}</div>
       <div class="tb-btns">
         <button class="tbtn" data-ui="speed">${this.speed < 1 ? '⏩ Fast' : '▶ Normal'}</button>

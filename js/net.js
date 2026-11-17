@@ -6,7 +6,7 @@
 const ROOM_PREFIX = 'capybar-';
 const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const FRIEND_AV = ['🍋', '🍇', '🍒', '🍓'];
-const SELF_AV = '<svg class="avsvg" viewBox="0 0 100 100"><use href="#capy"/></svg>';
+const SELF_AV = '<img class="avimg" src="assets/misc/avatar.webp" alt="">';
 
 class RemoteAgent {
   constructor(conn) { this.conn = conn; this.n = 0; this.pend = new Map(); this.dead = false; }
