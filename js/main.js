@@ -27,7 +27,34 @@ try { const n = localStorage.getItem('capybar-name'); if (n) $('#name-in').value
   $('#menu-fan').innerHTML = fan(['pianist', 'bara', 'witch'], 'left') + fan(['detective', 'singer', 'magician'], 'right');
 })();
 document.addEventListener('click', e => UI.onClick(e));
-document.addEventListener('mouseover', e => UI.hover(e));
+// Touch: hold a card to read it (tap still acts). Mouse: hover as before.
+(function touchPreview() {
+  const HOLD = 380; let timer = null, sx = 0, sy = 0, lastTouch = 0, quiet = 0, shown = false;
+  const target = e => e.target.closest && e.target.closest('.card[data-cid], .card[data-aid]');
+  const hide = () => { clearTimeout(timer); timer = null; if (shown) { shown = false; $('#zoom').innerHTML = ''; $('#zoom').classList.remove('touch'); UI._z = null; } };
+  document.addEventListener('mouseover', e => { if (Date.now() - lastTouch < 1000) return; UI.hover(e); });
+  document.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse') return;
+    lastTouch = Date.now(); hide();
+    const el = target(e); if (!el || el.classList.contains('lg') || el.closest('#zoom')) return;
+    sx = e.clientX; sy = e.clientY;
+    timer = setTimeout(() => {
+      timer = null; shown = true; quiet = Infinity;
+      UI.hover({ target: el });
+      const z = $('#zoom'); z.classList.add('touch');
+      if (navigator.vibrate) try { navigator.vibrate(12); } catch (x) {}
+    }, HOLD);
+  });
+  document.addEventListener('pointermove', e => {
+    if (e.pointerType === 'mouse' || shown || !timer) return;
+    if (Math.hypot(e.clientX - sx, e.clientY - sy) > 10) { clearTimeout(timer); timer = null; }
+  });
+  const up = e => { if (e.pointerType === 'mouse') return; lastTouch = Date.now(); if (shown) quiet = Date.now() + 450; hide(); };
+  document.addEventListener('pointerup', up); document.addEventListener('pointercancel', up);
+  // a long press must not also count as a tap
+  window.addEventListener('click', e => { if (quiet === Infinity || Date.now() < quiet) { e.stopPropagation(); e.preventDefault(); } }, true);
+  document.addEventListener('contextmenu', e => { if (target(e)) e.preventDefault(); });
+})();
 window.addEventListener('resize', () => Tut.reposition());
 document.querySelectorAll('.chip').forEach(c => c.onclick = () => {
   App.bots = +c.dataset.bots;

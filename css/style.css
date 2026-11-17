@@ -293,3 +293,33 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .menu-card { --lw: min(40vh, 80vw); padding-top: 1.6vh; }
 .logo-img { width: var(--lw); margin: 0; }
 .menu-card { --lw: min(44vh, 80vw); }
+
+/* ---------- touch / mobile ---------- */
+html, body { height: 100dvh; overscroll-behavior: none; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.card, .barslot, .hcard, .pile, .backroom { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.card img { -webkit-user-drag: none; pointer-events: none; }
+#zoom.touch { left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) scale(1.12); }
+#zoom.touch::before { content: ''; position: fixed; inset: 0; z-index: -1; background: rgba(0, 0, 0, .45); }
+@media (hover: none) {
+  .hcard:hover { transform: none; } .barslot.can:hover .card { transform: none; }
+  .btn:hover:not(:disabled) { filter: none; transform: none; }
+  .btn:active:not(:disabled) { transform: translateY(1px) scale(.98); }
+  .barslot.can:active .card, .pile.can:active .card { transform: scale(.97); }
+}
+@media (pointer: coarse) {
+  .btn.sm, .tbtn, .chip { min-height: 44px; }
+  input, select, textarea { font-size: 16px; }
+}
+/* portrait: ask for landscape instead of squeezing the table */
+#rotate { display: none; }
+@media (orientation: portrait) and (max-width: 900px) {
+  #rotate { display: flex; position: fixed; inset: 0; z-index: 900; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; padding: 24px;
+    background: #0a2a2d; color: #f3d98b; font-family: 'Cinzel', serif; font-size: 20px; letter-spacing: .04em; }
+  #rotate .ph { font-size: 64px; animation: rot 2.4s ease-in-out infinite; }
+  @keyframes rot { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+  #rotate small { font-family: 'Fredoka', sans-serif; font-size: 15px; letter-spacing: 0; color: #cdbb8a; }
+}
+/* keep dialog text readable on small screens */
+.mbox { font-size: max(calc(var(--u) * 1.9), 13px); }
+.menu-card { font-size: max(1em, 12px); }
+@media (pointer: coarse) { .mbox .btn { font-size: max(1em, 14px); } }
