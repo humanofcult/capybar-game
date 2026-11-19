@@ -97,7 +97,7 @@ const Tut = {
     if (this.afterInfo) { this.queue.push(...this.afterInfo); this.afterInfo = null; }
   },
   async beforeVote() {
-    if (this.on && !this.seen.vote) { this.seen.vote = true; await this.info('<b>A new round begins.</b> The Bar tops up, then a newcomer knocks at the door. The Bar is full, so every table votes on letting them in. Vote however you like.'); }
+    if (this.on && !this.seen.vote) { this.seen.vote = true; await this.info('<b>A new round begins.</b> Nobody took a capybara last round, so the Bar is still full and a newcomer knocks at the door. Every table votes on letting them in. Vote however you like.'); }
   },
   async beforeRemove() {
     if (this.on && !this.seen.rem) { this.seen.rem = true; await this.info('The newcomer is in, so someone must leave. Vote out capybaras your rivals want, and keep the ones you are saving up for.'); }

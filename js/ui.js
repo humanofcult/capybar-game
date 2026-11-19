@@ -336,7 +336,7 @@ const UI = {
       <li><b>Buy an Action card</b> for 2 Drinks (random draw, hand limit ${HAND_MAX}).</li>
       <li><b>Collect</b> ${COLLECT} Drinks.</li></ul>
       <p>You may also <b>play one Action card</b> per turn, before or after your main action.</p>
-      <p><b>New round.</b> The Bar refills. Then a newcomer knocks: every table votes to let them in or not (a tie lets them in). If they come in, everyone votes for who leaves the Bar. Most votes leaves, and tied capybaras all leave.</p>
+      <p><b>New round.</b> The Bar refills to 6. If nobody invited a capybara last round, the Bar is still full and a newcomer knocks: every table votes to let them in or not (a tie lets them in). If they come in, everyone votes for who leaves the Bar. Most votes leaves, and tied capybaras all leave.</p>
       <p><b>Backroom.</b> A hidden stash. Capybaras only get in through card effects. They score their printed ★ at game end but their abilities do not work there.</p>
       <p><b>Tokens.</b> ×2 doubles a capybara's base ★. ☠ (cursed) switches its ability off.</p>
       <p><b>Game end.</b> After the round in which the deck runs out, after round ${MAX_ROUNDS}, or when The Final Toast is played. Score = table + Backroom + bonus ★.</p>

@@ -173,7 +173,8 @@ class Game {
     this.current = -1;
     const added = this.refill();
     if (this.round > 1 && added) await this.say(`The Bar tops up with ${added} new capybara${added > 1 ? 's' : ''}`, 600);
-    if (this.round === 1 || !this.deck.length) return;
+    // A newcomer only knocks when nobody took a capybara last round (the Bar was still full).
+    if (this.round === 1 || !this.deck.length || added) return;
     const nc = this.drawCapy();
     const hole = this.bar.indexOf(null);
     if (hole >= 0) { this.bar[hole] = nc; return; }
