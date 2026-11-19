@@ -129,15 +129,18 @@ class Game {
   clean(card) { delete card.star; delete card.cursed; return card; }
   refill() { let n = 0; for (let i = 0; i < BAR_SIZE; i++) if (!this.bar[i]) { const c = this.drawCapy(); if (!c) break; this.bar[i] = c; n++; } return n; }
   toBackroom(pi, card) { this.players[pi].backroom.push(this.clean(card)); }
-  // Discard a capybara from a table. Zombie crawls into the Backroom instead.
+  // Discard a capybara from a table. A discarded Zombie sends a hidden capybara from the deck into the Backroom instead,
+  // so rivals never learn which capybara is back there.
   removeFromTable(pi, uid) {
     const p = this.players[pi]; const i = p.table.findIndex(c => c.uid === uid);
     if (i < 0) return null;
     const card = p.table.splice(i, 1)[0];
     const zombie = card.id === 'zombie' && !card.cursed;
     this.clean(card);
-    if (zombie) p.backroom.push(card); else this.discardPile.push(card);
-    return { card, zombie };
+    this.discardPile.push(card);
+    let hidden = false;
+    if (zombie) { const c = this.drawCapy(); if (c) { this.toBackroom(pi, c); hidden = true; } }
+    return { card, zombie: hidden };
   }
   swap(a, b) {
     const A = this.find(a), B = this.find(b);
@@ -247,7 +250,7 @@ class Game {
       const out = await this.ask(pi, { kind: 'capy', purpose: 'discardOwn', incoming: card, cands: p.table.map(c => c.uid), optional: true, prompt: `Your table is full. Choose a capybara to send home for ${CAPY[card.id].name}` });
       if (out == null) return false;
       const r = this.removeFromTable(pi, out);
-      await this.say(r.zombie ? `${p.name}'s Zombie shuffles into the Backroom` : `${p.name} sends ${CAPY[r.card.id].name} home`, 500);
+      await this.say(r.zombie ? `${p.name}'s Zombie leaves, and a capybara slips into the Backroom` : `${p.name} sends ${CAPY[r.card.id].name} home`, 500);
     }
     p.drinks -= cost; this.bar[slot] = null; p.table.push(card); this.turn.discount = 0;
     await this.say(`${p.name} invites ${CAPY[card.id].name} for ${cost} Drink${cost === 1 ? '' : 's'}`, 750);
@@ -274,7 +277,7 @@ class Game {
         const rest = p.table.filter(c => c.uid !== src && c.id !== 'drunk');
         if (!rest.length) break;
         const r = this.removeFromTable(pi, this.pick(rest).uid);
-        await this.say(r.zombie ? `Drunk knocks the Zombie into ${p.name}'s Backroom` : `Drunk Capybara chases ${CAPY[r.card.id].name} away from ${p.name}'s table`, 800);
+        await this.say(r.zombie ? `Drunk knocks out the Zombie, and a capybara slips into ${p.name}'s Backroom` : `Drunk Capybara chases ${CAPY[r.card.id].name} away from ${p.name}'s table`, 800);
         break;
       }
       case 'detective': {
@@ -307,10 +310,11 @@ class Game {
         if (p.drinks < 1) break;
         const c = this.bar.map((x, i) => x && CAPY[x.id].cost <= 3 ? i : -1).filter(i => i >= 0);
         if (!c.length) break;
-        const s = await this.ask(pi, { kind: 'bar', purpose: 'pilot', cands: c, optional: true, prompt: 'Pilot: pay 1 Drink to fly a Bar capybara into your Backroom (or skip)' });
+        const s = await this.ask(pi, { kind: 'bar', purpose: 'pilot', cands: c, optional: true, prompt: 'Pilot: pay 1 Drink to fly a Bar capybara away and stash a hidden capybara in your Backroom (or skip)' });
         if (s == null) break;
-        p.drinks -= 1; const card = this.bar[s]; this.bar[s] = null; this.toBackroom(pi, card);
-        await this.say(`Pilot flies ${CAPY[card.id].name} into ${p.name}'s Backroom`, 800);
+        p.drinks -= 1; const card = this.bar[s]; this.bar[s] = null; this.discardPile.push(this.clean(card));
+        const hid = this.drawCapy(); if (hid) this.toBackroom(pi, hid);
+        await this.say(`Pilot flies ${CAPY[card.id].name} away and ${p.name} stashes a capybara in the Backroom`, 800);
         break;
       }
       case 'magician': {
@@ -398,7 +402,7 @@ class Game {
       case 'bar_fight': {
         const c = q.table.filter(x => !this.isProtected(q.idx, x)); if (!c.length) break;
         const r = this.removeFromTable(q.idx, this.pick(c).uid);
-        await this.say(r.zombie ? `${q.name}'s Zombie is knocked into the Backroom` : `${CAPY[r.card.id].name} is thrown out of ${q.name}'s table`, 900);
+        await this.say(r.zombie ? `${q.name}'s Zombie is knocked out, and a capybara slips into their Backroom` : `${CAPY[r.card.id].name} is thrown out of ${q.name}'s table`, 900);
         break;
       }
       case 'happy_hour': p.drinks += 3; oth.forEach(o => { o.drinks += 1; }); await this.say(`Happy Hour! ${p.name} gains 3 Drinks, everyone else 1`); break;

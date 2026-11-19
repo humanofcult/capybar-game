@@ -323,3 +323,7 @@ html, body { height: 100dvh; overscroll-behavior: none; -webkit-text-size-adjust
 .mbox { font-size: max(calc(var(--u) * 1.9), 13px); }
 .menu-card { font-size: max(1em, 12px); }
 @media (pointer: coarse) { .mbox .btn { font-size: max(1em, 14px); } }
+/* turn clock */
+#clock { position: fixed; z-index: 250; left: 50%; top: calc(var(--u) * 4.6); transform: translateX(-50%); padding: .2em .9em; font: 700 max(calc(var(--u) * 2.2), 14px) 'Cinzel', serif;
+  color: var(--goldl); background: var(--teal); box-shadow: 0 0 0 2px var(--g), 0 .3em .8em rgba(0, 0, 0, .5); border-radius: 999px; pointer-events: none; letter-spacing: .06em; }
+#clock.low { color: #fff; background: #9a2a1c; box-shadow: 0 0 0 2px #ff8b6b; animation: pulse .5s infinite alternate; }

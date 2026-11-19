@@ -27,6 +27,7 @@ try { const n = localStorage.getItem('capybar-name'); if (n) $('#name-in').value
   $('#menu-fan').innerHTML = fan(['pianist', 'bara', 'witch'], 'left') + fan(['detective', 'singer', 'magician'], 'right');
 })();
 document.addEventListener('click', e => UI.onClick(e));
+setInterval(() => UI.tick(), 250);
 // Touch: hold a card to read it (tap still acts). Mouse: hover as before.
 (function touchPreview() {
   const HOLD = 380; let timer = null, sx = 0, sy = 0, lastTouch = 0, quiet = 0, shown = false;

@@ -35,7 +35,10 @@ function actionCard(card, o = {}) {
 }
 const backCard = (kind, size) => `<div class="card back ${kind} ${size || 'md'}"><div class="back-in">${kind === 'bk-capy' ? '<svg viewBox="0 0 100 100"><use href="#capy"/></svg>' : '<span>⚡</span>'}</div></div>`;
 
+const TURN_SECS = 60, VOTE_SECS = 20; // turn time limit; a late player is auto-played by the bot brain
+
 const UI = {
+  clockEnd: 0, deadline: 0, turnKey: '', voting: false,
   game: null, pending: null, speed: 1, msg: '', showLog: false, me: 0, mp: false,
 
   start(game) {
@@ -213,18 +216,47 @@ const UI = {
     return {
       async act(G, pi, opts) {
         if (Tut.on) await Tut.beforeAct(G, opts);
+        else { const key = G.round + ':' + G.current; if (ui.turnKey !== key) { ui.turnKey = key; ui.deadline = Date.now() + TURN_SECS * 1000; } ui.clockEnd = ui.deadline; }
         return new Promise(res => {
-          ui.pending = { mode: 'act', opts, resolve: a => { if (Tut.on && !Tut.allow(a)) return ui.nudge('Follow the tutorial step first.'); ui.pending = null; if (Tut.on) Tut.afterAct(a); res(a); } };
+          ui.pending = { mode: 'act', opts, resolve: a => { if (Tut.on && !Tut.allow(a)) return ui.nudge('Follow the tutorial step first.'); ui.pending = null; if (a.type === 'end') ui.clockEnd = 0; if (Tut.on) Tut.afterAct(a); res(a); } };
           ui.render();
         });
       },
       async choose(G, pi, req) {
-        if (req.kind === 'vote') { if (Tut.on) await Tut.beforeVote(); const v = await ui.voteModal(G, req); if (ui.mp) ui.waiting(); return v; }
-        if (req.kind === 'voteRemove') { if (Tut.on) await Tut.beforeRemove(); const v = await ui.removeModal(G, req); if (ui.mp) ui.waiting(); return v; }
-        if (req.kind === 'pick') return ui.pickModal(req);
+        if (req.kind === 'vote') { if (Tut.on) await Tut.beforeVote(); const v = await ui.timed(ui.voteModal(G, req), VOTE_SECS, () => Bot.choose(G, pi, req)); if (ui.mp) ui.waiting(); return v; }
+        if (req.kind === 'voteRemove') { if (Tut.on) await Tut.beforeRemove(); const v = await ui.timed(ui.removeModal(G, req), VOTE_SECS, () => Bot.choose(G, pi, req)); if (ui.mp) ui.waiting(); return v; }
+        if (req.kind === 'pick') return ui.timed(ui.pickModal(req), VOTE_SECS, () => Bot.choose(G, pi, req));
+        if (!Tut.on) ui.clockEnd = ui.deadline;
         return new Promise(res => { ui.pending = { mode: 'choose', req, resolve: v => { ui.pending = null; ui.render(); res(v); } }; ui.render(); });
       },
     };
+  },
+
+  // ---------- turn clock ----------
+  // Votes and picks race a timer; the main turn uses a deadline checked by tick().
+  timed(promise, secs, fallback) {
+    if (Tut.on) return promise;
+    this.clockEnd = Date.now() + secs * 1000; this.voting = true;
+    let t;
+    const late = new Promise(r => { t = setTimeout(async () => { this.closeModal(); r(await fallback()); }, secs * 1000); });
+    return Promise.race([promise, late]).finally(() => { clearTimeout(t); this.voting = false; this.clockEnd = 0; });
+  },
+  tick() {
+    const el = $('#clock'), p = this.pending, live = !Tut.on && this.game && this.clockEnd && (p || this.voting);
+    if (!live) { if (el) el.classList.add('hidden'); return; }
+    const left = Math.max(0, Math.ceil((this.clockEnd - Date.now()) / 1000));
+    el.classList.remove('hidden'); el.classList.toggle('low', left <= 10);
+    el.textContent = '⏱ ' + left;
+    if (left <= 0 && p && !this.expiring) this.expire(p);
+  },
+  async expire(p) {
+    this.expiring = true;
+    try {
+      const G = this.game, me = this.me;
+      this.nudge('Time is up!');
+      if (p.mode === 'act') p.resolve(p.opts.canEnd ? { type: 'end' } : await Bot.act(G, me, p.opts));
+      else p.resolve(await Bot.choose(G, me, p.req));
+    } finally { this.expiring = false; }
   },
 
   // ---------- modals ----------

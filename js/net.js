@@ -118,7 +118,7 @@ const Net = {
     const cp = $('#n-copy'); if (cp) cp.onclick = () => { try { navigator.clipboard.writeText($('#n-link').value); cp.textContent = 'Copied!'; } catch (e) { $('#n-link').select(); } };
   },
   drawJoin(msg) {
-    UI.openModal(`<h2>Room ${this.code}</h2><div class="seats">${this.seatList(this.names, Math.max(this.names.length, this.total), this.names.indexOf(this.myName))}</div>
+    UI.openModal(`<h2>Room ${this.code}</h2><div class="seats">${this.seatList(this.names, Math.max(this.names.length, this.total), this.mySeat == null ? this.names.indexOf(this.myName) : this.mySeat)}</div>
       <p>${esc(msg || 'You are in! Waiting for the host to start the game…')}</p><div class="mbtns"><button class="btn ghost" id="n-leave">Leave</button></div>`);
     $('#n-leave').onclick = () => { this.leave(); UI.closeModal(); };
   },
@@ -150,7 +150,7 @@ const Net = {
       if (m.t === 'hello') {
         if (this.started || this.members.length >= 3 || this.memberOf(c)) { try { c.send({ t: 'full', started: this.started }); } catch (e) {} setTimeout(() => c.close(), 400); return; }
         let nm = String(m.name || 'Friend').slice(0, 12), k = 2; const taken = () => nm === this.myName || this.members.some(x => x.name === nm);
-        const base = nm; while (taken()) nm = base.slice(0, 10) + k++;
+        const base = nm; while (taken()) nm = base.slice(0, 9) + ' ' + k++;
         this.members.push({ conn: c, name: nm, agent: null, seat: -1 });
         this.lobbyUpdate();
       } else if (m.t === 'resp') { const mem = this.memberOf(c); if (mem && mem.agent) mem.agent.onResp(m); }
@@ -170,7 +170,7 @@ const Net = {
   },
   lobbyUpdate() {
     const names = [this.myName, ...this.members.map(m => m.name)];
-    for (const m of this.members) { try { m.conn.send({ t: 'lobby', names, total: Math.max(this.total, names.length) }); } catch (e) {} }
+    this.members.forEach((m, i) => { try { m.conn.send({ t: 'lobby', names, total: Math.max(this.total, names.length), you: i + 1 }); } catch (e) {} });
     this.drawHost();
   },
   startGame() {
@@ -215,7 +215,7 @@ const Net = {
   },
   onHost(m) {
     if (!m || typeof m !== 'object') return;
-    if (m.t === 'lobby') { this.names = m.names; this.total = m.total; if (!this.started) this.drawJoin(); }
+    if (m.t === 'lobby') { this.names = m.names; this.total = m.total; this.mySeat = m.you; if (m.you != null && m.names[m.you]) this.myName = m.names[m.you]; if (!this.started) this.drawJoin(); }
     else if (m.t === 'full') { this.leave(true); this.fail(m.started ? 'That game has already started.' : 'That room is full.'); }
     else if (m.t === 'start') this.startClient(m);
     else if (m.t === 'ev' || m.t === 'req') { this.q.push(m); this.pump(); }
